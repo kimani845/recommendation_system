@@ -40,7 +40,7 @@ class CakeSalesApp:
         
         ttk.Label(date_frame, text="Select Date:").grid(row=0, column=0, padx=5, pady=5)
         self.date_entry = DateEntry(date_frame, width=12, background='darkblue',
-                                   foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
+                                    foreground='white', borderwidth=2, date_pattern='yyyy-mm-dd')
         self.date_entry.grid(row=0, column=1, padx=5, pady=5)
         
         # Region selection
