@@ -14,7 +14,7 @@ import os
 
 # Constants
 CAKE_TYPES = ['Heart Cakes', 'Coconut Cakes', 'Mobile Cakes', 'Block Cakes','Star Cakes', 'Queen Cakes', 'Sweet Cakes']
-REGIONS = ['Region A', 'Region B', 'Region C', 'Region D'] 
+REGIONS = ['Whitehouse', 'Ngomongo', 'Kiamunyi', 'Kabachia'] 
 DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 class CakeSalesTracker:
