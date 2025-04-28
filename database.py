@@ -40,7 +40,7 @@ def add_region(region_name):
         conn.commit()
     except sqlite3.IntegrityError:
         print(f"Region '{region_name}' already exists.")
-        pass 
+        pass # Region already exists
     finally:
         conn.close()
         
