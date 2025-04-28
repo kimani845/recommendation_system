@@ -37,11 +37,10 @@ def add_region(region_name):
     cursor = conn.cursor()
     try:
         cursor.execute("INSERT INTO regions (name) VALUES (?)", (region_name,))
-        # cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
-        region_id = cursor.fetchone()[0]
-        return region_id
-    except TypeError:
-        pass
-    conn.commit()
-    conn.close()    
-    
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print(f"Region '{region_name}' already exists.")
+        pass 
+    finally:
+        conn.close()
+        
