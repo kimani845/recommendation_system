@@ -12,114 +12,110 @@ from datetime import datetime, timedelta
 import calendar
 import os
 
-from database import get_sales_summary, get_all_sales, get_all_regions, get_all_cake_types, add_sale, add_region, add_cake_type, get_sales_by_date, get_sales_by_region, get_sales_by_cake_type, get_sales_by_region, get_sales_by_cake_type, get_sales_by_date
-
-# # Constants
-# CAKE_TYPES = ['Heart Cakes', 'Coconut Cakes', 'Mobile Cakes', 'Block Cakes','Star Cakes', 'Queen Cakes', 'Sweet Cakes']
-# REGIONS = ['Whitehouse', 'Ngomongo', 'Kiamunyi', 'Kabachia'] 
-# DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+# Constants
+CAKE_TYPES = ['Heart Cakes', 'Coconut Cakes', 'Mobile Cakes', 'Block Cakes','Star Cakes', 'Queen Cakes', 'Sweet Cakes']
+REGIONS = ['Whitehouse', 'Ngomongo', 'Kiamunyi', 'Kabachia'] 
+DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 class CakeSalesTracker:
-    def __init__(self):
-        pass # removed the excel_file
+    """Class to track and analyze cake sales data"""
+    def __init__(self, excel_file='cake_sales_tracker.xlsx'):
+        self.excel_file = excel_file
+        self.sales_data = None
+        self.model = None
+        
+        # Create the Excel file if it doesn't exist
+        if not os.path.exists(excel_file):
+            self.create_excel_structure()
     
-    # def __init__(self, excel_file='cake_sales_tracker.xlsx'):
-    #     self.excel_file = excel_file
-    #     self.sales_data = None
-    #     self.model = None
+    def create_excel_structure(self):
+        """Create the initial Excel file structure with all necessary sheets"""
+        workbook = openpyxl.Workbook()
         
-        # # Create the Excel file if it doesn't exist
-        # if not os.path.exists(excel_file):
-        #     self.create_excel_structure()
-    
-    # def create_excel_structure(self):
-    #     """Create the initial Excel file structure with all necessary sheets"""
-    #     workbook = openpyxl.Workbook()
+        # Remove default sheet
+        default_sheet = workbook.active
+        workbook.remove(default_sheet)
         
-    #     # Remove default sheet
-    #     default_sheet = workbook.active
-    #     workbook.remove(default_sheet)
+        # Create Daily Sales sheet
+        daily_sheet = workbook.create_sheet('Daily Sales')
         
-    #     # Create Daily Sales sheet
-    #     daily_sheet = workbook.create_sheet('Daily Sales')
+        # Create header row
+        headers = ['Date', 'Day of Week', 'Region']
+        headers.extend(CAKE_TYPES)
+        headers.append('Total Sales')
         
-    #     # Create header row
-    #     headers = ['Date', 'Day of Week', 'Region']
-    #     headers.extend(CAKE_TYPES)
-    #     headers.append('Total Sales')
+        for col, header in enumerate(headers, 1):
+            cell = daily_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(headers, 1):
-    #         cell = daily_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Create Weekly Summary sheet
+        weekly_sheet = workbook.create_sheet('Weekly Summary')
+        weekly_headers = ['Week', 'Start Date', 'End Date'] + CAKE_TYPES + ['Total Sales']
         
-    #     # Create Weekly Summary sheet
-    #     weekly_sheet = workbook.create_sheet('Weekly Summary')
-    #     weekly_headers = ['Week', 'Start Date', 'End Date'] + CAKE_TYPES + ['Total Sales']
+        for col, header in enumerate(weekly_headers, 1):
+            cell = weekly_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(weekly_headers, 1):
-    #         cell = weekly_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Create Monthly Analysis sheet
+        monthly_sheet = workbook.create_sheet('Monthly Analysis')
+        monthly_headers = ['Month', 'Year'] + CAKE_TYPES + ['Total Sales']
         
-    #     # Create Monthly Analysis sheet
-    #     monthly_sheet = workbook.create_sheet('Monthly Analysis')
-    #     monthly_headers = ['Month', 'Year'] + CAKE_TYPES + ['Total Sales']
+        for col, header in enumerate(monthly_headers, 1):
+            cell = monthly_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(monthly_headers, 1):
-    #         cell = monthly_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Create Day of Week Analysis sheet
+        dow_sheet = workbook.create_sheet('Day of Week Analysis')
+        dow_headers = ['Day of Week'] + CAKE_TYPES + ['Total Sales']
         
-    #     # Create Day of Week Analysis sheet
-    #     dow_sheet = workbook.create_sheet('Day of Week Analysis')
-    #     dow_headers = ['Day of Week'] + CAKE_TYPES + ['Total Sales']
+        for col, header in enumerate(dow_headers, 1):
+            cell = dow_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(dow_headers, 1):
-    #         cell = dow_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Add days of week
+        for row, day in enumerate(DAYS_OF_WEEK, 2):
+            dow_sheet.cell(row=row, column=1).value = day
         
-    #     # Add days of week
-    #     for row, day in enumerate(DAYS_OF_WEEK, 2):
-    #         dow_sheet.cell(row=row, column=1).value = day
+        # Create Regional Analysis sheet
+        region_sheet = workbook.create_sheet('Regional Analysis')
+        region_headers = ['Region'] + CAKE_TYPES + ['Total Sales']
         
-    #     # Create Regional Analysis sheet
-    #     region_sheet = workbook.create_sheet('Regional Analysis')
-    #     region_headers = ['Region'] + CAKE_TYPES + ['Total Sales']
+        for col, header in enumerate(region_headers, 1):
+            cell = region_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(region_headers, 1):
-    #         cell = region_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Add regions
+        for row, region in enumerate(REGIONS, 2):
+            region_sheet.cell(row=row, column=1).value = region
         
-    #     # Add regions
-    #     for row, region in enumerate(REGIONS, 2):
-    #         region_sheet.cell(row=row, column=1).value = region
+        # Create Predictions sheet
+        pred_sheet = workbook.create_sheet('Predictions')
+        pred_headers = ['Date', 'Day of Week', 'Region'] + CAKE_TYPES
         
-    #     # Create Predictions sheet
-    #     pred_sheet = workbook.create_sheet('Predictions')
-    #     pred_headers = ['Date', 'Day of Week', 'Region'] + CAKE_TYPES
+        for col, header in enumerate(pred_headers, 1):
+            cell = pred_sheet.cell(row=1, column=col)
+            cell.value = header
+            cell.font = Font(bold=True)
+            cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
         
-    #     for col, header in enumerate(pred_headers, 1):
-    #         cell = pred_sheet.cell(row=1, column=col)
-    #         cell.value = header
-    #         cell.font = Font(bold=True)
-    #         cell.fill = PatternFill(start_color="DDEBF7", end_color="DDEBF7", fill_type="solid")
+        # Create Dashboard sheet
+        dashboard = workbook.create_sheet('Dashboard')
+        dashboard.cell(row=1, column=1).value = "Cake Sales Dashboard"
+        dashboard.cell(row=1, column=1).font = Font(size=16, bold=True)
         
-    #     # Create Dashboard sheet
-    #     dashboard = workbook.create_sheet('Dashboard')
-    #     dashboard.cell(row=1, column=1).value = "Cake Sales Dashboard"
-    #     dashboard.cell(row=1, column=1).font = Font(size=16, bold=True)
-        
-    #     # Save the workbook
-    #     workbook.save(self.excel_file)
-    #     print(f"Created Excel file: {self.excel_file}")
+        # Save the workbook
+        workbook.save(self.excel_file)
+        print(f"Created Excel file: {self.excel_file}")
     
     def load_data(self):
         """Load data from Excel file into pandas DataFrame"""
