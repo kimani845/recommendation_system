@@ -101,3 +101,28 @@ def get_sales_by_date(sale_date):
     sales = cursor.fetchall()
     conn.close()
     return sales
+
+def get_all_sales():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT sale_date, region_id, cake_id, quantity FROM sales")
+    sales = cursor.fetchall()
+    conn.close()
+    return sales
+
+def get_all_regions():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM regions")
+    regions = cursor.fetchall()
+    conn.close()
+    return regions
+
+def get_all_cake_types():
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM cake_types")
+    cake_types = cursor.fetchall()
+    conn.close()
+    return cake_types
+
