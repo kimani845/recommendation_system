@@ -93,3 +93,11 @@ def get_sales_by_cake_type(cake_name):
     sales = cursor.fetchall()
     conn.close()
     return sales
+
+def get_sales_by_date(sale_date):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT region_id, cake_id, quantity FROM sales WHERE sale_date=?", (sale_date,))
+    sales = cursor.fetchall()
+    conn.close()
+    return sales
