@@ -83,3 +83,13 @@ def get_sales_by_region(region_name):
     sales = cursor.fetchall()
     conn.close()
     return sales
+
+def get_sales_by_cake_type(cake_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM cake_types WHERE name=?", (cake_name,))
+    cake_id = cursor.fetchone()[0]
+    cursor.execute("SELECT sale_date, region_id, quantity FROM sales WHERE cake_id=?", (cake_id,))
+    sales = cursor.fetchall()
+    conn.close()
+    return sales
