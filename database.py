@@ -31,3 +31,11 @@ def create_database():
     ''')
     conn.commit()
     conn.close()
+    
+def add_region(region_name):
+    conn = sqlite3.connect(DATABASE_NAME)
+    cursor = conn.cursor()
+    cursor.execute("INSERT INTO regions (name) VALUES (?)", (region_name,))
+    conn.commit()
+    conn.close()    
+    
