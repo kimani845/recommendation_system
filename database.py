@@ -36,7 +36,8 @@ def add_region(region_name):
     conn = sqlite3.connect(DATABASE_NAME)
     cursor = conn.cursor()
     try:
-        cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
+        cursor.execute("INSERT INTO regions (name) VALUES (?)", (region_name,))
+        # cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
         region_id = cursor.fetchone()[0]
         return region_id
     except TypeError:
