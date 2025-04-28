@@ -503,13 +503,13 @@ if __name__ == "__main__":
                 sales['Heart Cakes'] = int(sales['Heart Cakes'] * 1.3)
             
             # - Region preferences
-            if region == 'Region A':
+            if region == 'Whitehouse':
                 sales['Coconut Cakes'] = int(sales['Coconut Cakes'] * 1.2)
-            elif region == 'Region B':
+            elif region == 'Ngomongo':
                 sales['Mobile Cakes'] = int(sales['Mobile Cakes'] * 1.2)
-            elif region == 'Region C':
+            elif region == 'Kiamunyi':
                 sales['Queen Cakes'] = int(sales['Queen Cakes'] * 1.2)
-            elif region == 'Region D':
+            elif region == 'Kabachia':
                 sales['Sweet Cakes'] = int(sales['Sweet Cakes'] * 1.2)
             
             tracker.add_daily_sales(current_date, region, sales)
