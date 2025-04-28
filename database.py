@@ -2,8 +2,15 @@ import sqlite3
 
 DATABASE_NAME = 'cake_sales.db'
 
+def get_connection():
+    return sqlite3.connect(DATABASE_NAME)
+
 def create_database():
     conn = sqlite3.connect('cake_sales.db')
+    cursor = conn.cursor()
+
+def initialize_database():
+    conn = get_connection()
     cursor = conn.cursor()
     
     cursor.execute('''
@@ -33,7 +40,7 @@ def create_database():
     conn.close()
     
 def add_region(region_name):
-    conn = sqlite3.connect(DATABASE_NAME)
+    conn = get_connection()
     cursor = conn.cursor()
     try:
         cursor.execute("INSERT INTO regions (name) VALUES (?)", (region_name,))
@@ -44,3 +51,14 @@ def add_region(region_name):
     finally:
         conn.close()
         
+def add_cake_type(cake_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("INSERT INTO cake_types (name) VALUES (?)", (cake_name,))
+        conn.commit()
+    except sqlite3.IntegrityError:
+        print(f"Cake type '{cake_name}' already exists.")
+        pass # Cake type already exists
+    finally:
+        conn.close()
