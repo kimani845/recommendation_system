@@ -126,10 +126,19 @@ def get_all_cake_types():
     conn.close()
     return cake_types
 
+
 def get_sales_summary():
     conn = get_connection()
     cursor = conn.cursor()
-    cursor.execute("SELECT region_id, cake_id, SUM(quantity) FROM sales GROUP BY region_id, cake_id")
-    sales_summary = cursor.fetchall()
+    
+    cursor.execute('''
+        SELECT cakes.name, SUM(sales.quantity) 
+        FROM sales
+        JOIN cakes ON sales.cake_id = cakes.id
+        GROUP BY cakes.name
+        ORDER BY SUM(sales.quantity) DESC
+    ''')
+    
+    results = cursor.fetchall()
     conn.close()
-    return sales_summary    
+    return results
