@@ -1,5 +1,7 @@
 import sqlite3
 
+DATABASE_NAME = 'cake_sales.db'
+
 def create_database():
     conn = sqlite3.connect('cake_sales.db')
     cursor = conn.cursor()
