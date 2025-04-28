@@ -73,3 +73,13 @@ def add_sale(sale_date, region_name, cake_name, quantity):
     cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
     conn.commit()
     conn.close()
+
+def get_sales_by_region(region_name):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
+    region_id = cursor.fetchone()[0]
+    cursor.execute("SELECT sale_date, cake_id, quantity FROM sales WHERE region_id=?", (region_id,))
+    sales = cursor.fetchall()
+    conn.close()
+    return sales
