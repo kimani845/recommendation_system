@@ -62,3 +62,14 @@ def add_cake_type(cake_name):
         pass # Cake type already exists
     finally:
         conn.close()
+        
+def add_sale(sale_date, region_name, cake_name, quantity):
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
+    region_id = cursor.fetchone()[0]
+    cursor.execute("SELECT id FROM cake_types WHERE name=?", (cake_name,))
+    cake_id = cursor.fetchone()[0]
+    cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
+    conn.commit()
+    conn.close()
