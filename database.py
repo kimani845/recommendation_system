@@ -5,13 +5,18 @@ DATABASE_NAME = 'cake_sales.db'
 def create_database():
     conn = sqlite3.connect('cake_sales.db')
     cursor = conn.cursor()
-    cusor.execute('''CREATE TABLE IF NOT EXISTS regions
-                        (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT)''')
     
-    cursor.execute('''CREATE TABLE IF NOT EXISTS cake_types
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS regions
                         (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT)''')
+                        name TEXT)
+                        ''')
+    
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS cake_types
+                        (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        name TEXT)
+                        ''')
     
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS sales (
