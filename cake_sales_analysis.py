@@ -12,16 +12,14 @@ from datetime import datetime, timedelta
 import calendar
 import os
 
-# Constants
-CAKE_TYPES = ['Heart Cakes', 'Coconut Cakes', 'Mobile Cakes', 'Block Cakes','Star Cakes', 'Queen Cakes', 'Sweet Cakes']
-REGIONS = ['Whitehouse', 'Ngomongo', 'Kiamunyi', 'Kabachia'] 
-DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+# # Constants
+# CAKE_TYPES = ['Heart Cakes', 'Coconut Cakes', 'Mobile Cakes', 'Block Cakes','Star Cakes', 'Queen Cakes', 'Sweet Cakes']
+# REGIONS = ['Whitehouse', 'Ngomongo', 'Kiamunyi', 'Kabachia'] 
+# DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
 class CakeSalesTracker:
-    def __init__(self, excel_file='cake_sales_tracker.xlsx'):
-        self.excel_file = excel_file
-        self.sales_data = None
-        self.model = None
+    def __init__(self):
+        pass # Removed the excel sheet that i was using before
         
         # Create the Excel file if it doesn't exist
         if not os.path.exists(excel_file):
