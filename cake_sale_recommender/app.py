@@ -50,3 +50,22 @@ def generate_predictions():
         else:
             flash("Failed to generate prediction. Please train the model first.")
     return render_template('generate_predictions.html', cake_types=CAKE_TYPES, regions=REGIONS, predictions=predictions)
+
+@app.route('/recommendations', methods=['GET', 'POST'])
+def recommendations():
+    recommendations = {}
+    if request.method == 'POST':
+        region = request.form['region']
+        recommendations = generate_recommendations(region=region)
+    return render_template('recommendations.html', cake_types=CAKE_TYPES, regions=REGIONS, recommendations=recommendations)
+
+
+@app.route('/analysis')
+def analysis():
+    try: 
+        tracker.update_summaries()
+        tracker.update_dashboard()
+    except Exception as e:
+        flash(f"Error updating analysis: {e}")
+        return redirect(url_for('analysis'))
+    return render_template('analysis.html')
