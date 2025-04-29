@@ -39,3 +39,10 @@ def get_recent_sales(region=None, days=30):
     recent_sales = cursor.fetchall()
     conn.close()
     return recent_sales
+
+
+def generate_recommendations(region=None, days=30, top_n=3):
+    """Generate recommendations based on recent sales data"""
+    recent_sales = get_recent_sales(region, days)
+    recommendations = [cake for cake, _ in recent_sales[:top_n]]
+    return recommendations
