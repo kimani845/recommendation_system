@@ -11,3 +11,4 @@ tracker = CakeSalesTracker()
 
 @app.route('/')
 def index():
+    return redirect(url_for('record_sales'))
