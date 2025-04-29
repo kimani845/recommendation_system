@@ -49,6 +49,21 @@ def get_recent_sales(region=None, days=30):
 #     recommend_quantity = [quantity for _, quantity in recent_sales[:top_n]] 
 #     recommendations.append((cake, recommend_quantity))
 #     return recommendations
+"""
+def print_recommendations(region=None, days=30, top_n=3):
+
+    Display recommendations in a human-friendly format.
+
+    recs = generate_recommendations(region=region, days=days, top_n=top_n)
+    print(f"\nTop {top_n} cake recommendations for the last {days} days" + (f" in '{region}'" if region else "") + ":")
+    for cake, qty in recs:
+        print(f" - {cake}: ~{qty} sold")
+
+if __name__ == "__main__":
+    # Run basic demo
+    print_recommendations()
+    """
+    
 def generate_recommendations(region=None, days=30, top_n=5):
     """Generate recommendations based on recent sales data"""
     sales = get_recent_sales(region=region, days=days)
