@@ -3,7 +3,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
 from recommender import generate_recommendations
 from database import get_connection
-from datetime import datetime
+from datetime import datetime 
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -21,15 +21,32 @@ def record_sales():
         sales_data = {}
         try: 
             for cakes in CAKE_TYPES:
-                sales_data[cakes] = int(request.form[cakes])
+                sales_data[cakes] = int(request.form.get(cakes, 0))
         except ValueError:
             flash("Invalid sales data. Please enter valid numbers.")
             return redirect(url_for('record_sales'))
         
-        tracker.add_daily_sales(date, region, sales_data)
+        tracker.add_daily_sales(datetime.strptime(date, '-%Y-%m-%d'), region, sales_data)
         flash("Sales data recorded successfully!")
         return redirect(url_for('record_sales'))
     
     return render_template('record_sales.html', cake_types=CAKE_TYPES, regions=REGIONS)
 
 @app.route('/generate_predictions', methods=['GET', 'POST'])
+def generate_predictions():
+    predictions = {}
+    if request.method == 'POST':
+        date = request.form['date']
+        region = request.form['region']
+        try: 
+            predictions = tracker.predict_next_day(datetime.strptime(date, '-%Y-%m-%d'), region)
+        except ValueError:
+            flash("Invalid date format. Please use YYYY-MM-DD.")
+            return redirect(url_for('generate_predictions'))
+        predictions = tracker.predict_next_day(date, region)
+        if predictions:
+            tracker.add_prediction_to_excel(date, region, predictions)
+            flash("Prediction generated successfully!")
+        else:
+            flash("Failed to generate prediction. Please train the model first.")
+    return render_template('generate_predictions.html', cake_types=CAKE_TYPES, regions=REGIONS, predictions=predictions)
