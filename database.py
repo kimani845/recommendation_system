@@ -33,7 +33,7 @@ def initialize_database():
             cake_id INTEGER NOT NULL,
             quantity INTEGER NOT NULL,
             FOREIGN KEY (region_id) REFERENCES regions(id),
-            FOREIGN KEY (cake_id) REFERENCES cakes(id)
+            FOREIGN KEY (cake_id) REFERENCES cake_types(id)
         )
     ''')
     conn.commit()
