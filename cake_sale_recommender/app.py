@@ -45,7 +45,7 @@ def generate_predictions():
             return redirect(url_for('generate_predictions'))
         predictions = tracker.predict_next_day(date, region)
         if predictions:
-            tracker.add_prediction_to_excel(date, region, predictions)
+            tracker.add_prediction_to_excel(datetime.strptime(date, '-%Y-%m-%d'), region, predictions)
             flash("Prediction generated successfully!")
         else:
             flash("Failed to generate prediction. Please train the model first.")
