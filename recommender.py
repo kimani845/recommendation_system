@@ -52,8 +52,17 @@ def get_recent_sales(region=None, days=30):
 def generate_recommendations(region=None, days=30, top_n=5):
     """Generate recommendations based on recent sales data"""
     sales = get_recent_sales(region=region, days=days)
+    
     recommendations = []
     for cake_type, total_sales in sales[:top_n]:
         recommend_quantity = int(total_sales * 1.2)  # Increase by 20%
         recommendations.append((cake_type, recommend_quantity))
     return recommendations
+
+if __name__ == "__main__":
+    print("Recommendations for all regions:")
+    print(generate_recommendations())
+    recs = generate_recommendations(region= None, days=30, top_n=5)
+    for cakes, qty in recs:
+        print(f"{cakes}: Order ~{qty} units")
+    
