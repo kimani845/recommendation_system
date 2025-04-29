@@ -69,3 +69,7 @@ def analysis():
         flash(f"Error updating analysis: {e}")
         return redirect(url_for('analysis'))
     return render_template('analysis.html')
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
