@@ -4,7 +4,7 @@ from tkcalendar import DateEntry
 import pandas as pd
 from datetime import datetime
 import os
-from cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
+from cake_sale_recommender.cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
 
 class CakeSalesApp:
     def __init__(self, root):

@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 import calendar
 import os
 
-from database import get_connection
+from cake_sale_recommender.database import get_connection
 class CakeSalesTracker:
     def __init__(self):
         pass # removed the excel_file
