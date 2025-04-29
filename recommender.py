@@ -36,3 +36,6 @@ def get_recent_sales(region=None, days=30):
                 (since_date,)
 
         )
+    recent_sales = cursor.fetchall()
+    conn.close()
+    return recent_sales
