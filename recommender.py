@@ -51,6 +51,7 @@ def get_recent_sales(region=None, days=30):
 #     return recommendations
 def generate_recommendations(region=None, days=30, top_n=5):
     """Generate recommendations based on recent sales data"""
+    sales = get_recent_sales(region=region, days=days)
     recommendations = []
     for cake_type, total_sales in sales[:top_n]:
         recommend_quantity = int(total_sales * 1.2)  # Increase by 20%
