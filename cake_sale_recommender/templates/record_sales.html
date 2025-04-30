@@ -28,5 +28,12 @@
 
         <h4>Cake Sales per Type:</h4>
         {% for cake in cake_types %}
+        <label>{{cake}} </label>
+        <input type="number" name="{{cake}}" class = 'form-control' value="0", min = "0" required><br>
+        {% endfor %}
+    <br>
+        <button type="submit" class="btn btn-primary">Record Sales</button>
+    </form>
+</div>
 
 {% endblock %}
