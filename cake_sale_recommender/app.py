@@ -79,10 +79,11 @@ def train_model():
         flash(f"Error training model: {e}")
     return redirect(url_for('base'))
 
+@app.route('/download-report')
+def download_report():
+    return redirect(url_for('base'))
 
-def open_excel():
-    tracker.open_excel()
-    return redirect(url_for('analysis'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)
