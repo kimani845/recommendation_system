@@ -81,7 +81,7 @@ def train_model():
 
 @app.route('/download-report')
 def download_report():
-return send_file(tracker.excel_file, as_attachment=True)
+    return send_file(tracker.excel_file, as_attachment=True)
 
 
 if __name__ == '__main__':

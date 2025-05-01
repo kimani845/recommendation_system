@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Cake Sales Dashboard</title></head>
+<body>
+    <h1>Welcome to Cake Sales Tracker</h1>
+    <ul>
+        <li><a href="{{ url_for('add_sales') }}">Add Daily Sales</a></li>
+        <li><a href="{{ url_for('predict') }}">Predict Next Day Sales</a></li>
+        <li><a href="{{ url_for('train_model') }}">Train Prediction Model</a></li>
+        <li><a href="{{ url_for('download_report') }}">Download Excel Report</a></li>
+    </ul>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+        <p style="color:green">{{ message }}</p>
+        {% endfor %}
+    {% endwith %}
+</body>
+</html>
