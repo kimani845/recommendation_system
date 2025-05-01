@@ -70,6 +70,19 @@ def analysis():
         return redirect(url_for('analysis'))
     return render_template('analysis.html')
 
+@app.route('/train-model')
+def train_model():
+    try:
+        tracker.train_prediction_model()
+        flash("Model trained successfully!", "info")
+    except Exception as e:
+        flash(f"Error training model: {e}")
+    return redirect(url_for('base'))
+
+
+def open_excel():
+    tracker.open_excel()
+    return redirect(url_for('analysis'))
 
 if __name__ == '__main__':
     app.run(debug=True)
