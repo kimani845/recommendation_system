@@ -5,3 +5,11 @@ seaborn>=0.11.0
 scikit-learn>=1.0.0
 openpyxl>=3.0.0
 tkcalendar>=1.6.0
+
+
+Flask
+pandas
+openpyxl
+scikit-learn
+seaborn
+matplotlib
