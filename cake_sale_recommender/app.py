@@ -1,8 +1,8 @@
 # Flask Main App
 from flask import Flask, render_template, request, redirect, url_for, flash
-from cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
+# from cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
 from recommender import generate_recommendations
-from database import get_connection
+from database import get_connection, get_all_cake_types, get_all_regions
 from datetime import datetime 
 
 app = Flask(__name__)
@@ -11,10 +11,12 @@ tracker = CakeSalesTracker()
 
 @app.route('/')
 def index():
-    return redirect(url_for('record_sales'))
+    return redirect(url_for('base'))
 
 @app.route('/record_sales', methods=['GET', 'POST'])
 def record_sales():
+    cake_types = [ct[0] for ct in get_all_cake_types()]
+    regions = [r[0] for r in get_all_regions()]
     if request.method == 'POST':
         date = request.form['date']
         region = request.form['region']

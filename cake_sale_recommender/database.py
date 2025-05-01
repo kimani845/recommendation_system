@@ -68,16 +68,17 @@ def add_sale(sale_date, region_name, cake_name, quantity):
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
     region = cursor.fetchone()
-if region is None:
-    raise ValueError(f"Region '{region_name}' does not exist.")
-region_id = region[0]
+    if region is None:
+        raise ValueError(f"Region '{region_name}' does not exist.")
+    region_id = region[0]
 
     cursor.execute("SELECT id FROM cake_types WHERE name=?", (cake_name,))
 
-cake = cursor.fetchone()
-if cake is None:
-    raise ValueError(f"Cake type '{cake_name}' does not exist.")
-cake_id = cake[0]    cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
+    cake = cursor.fetchone()
+    if cake is None:
+        raise ValueError(f"Cake type '{cake_name}' does not exist.")
+    cake_id = cake[0]    
+    cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
     conn.commit()
     conn.close()
 
