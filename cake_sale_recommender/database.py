@@ -67,10 +67,17 @@ def add_sale(sale_date, region_name, cake_name, quantity):
     conn = get_connection()
     cursor = conn.cursor()
     cursor.execute("SELECT id FROM regions WHERE name=?", (region_name,))
-    region_id = cursor.fetchone()[0]
+    region = cursor.fetchone()
+if region is None:
+    raise ValueError(f"Region '{region_name}' does not exist.")
+region_id = region[0]
+
     cursor.execute("SELECT id FROM cake_types WHERE name=?", (cake_name,))
-    cake_id = cursor.fetchone()[0]
-    cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
+
+cake = cursor.fetchone()
+if cake is None:
+    raise ValueError(f"Cake type '{cake_name}' does not exist.")
+cake_id = cake[0]    cursor.execute("INSERT INTO sales (sale_date, region_id, cake_id, quantity) VALUES (?, ?, ?, ?)", (sale_date, region_id, cake_id, quantity))    
     conn.commit()
     conn.close()
 
@@ -134,8 +141,8 @@ def get_sales_summary():
     cursor.execute('''
         SELECT cakes.name, SUM(sales.quantity) 
         FROM sales
-        JOIN cakes ON sales.cake_id = cakes.id
-        GROUP BY cakes.name
+        JOIN cake_types ON sales.cake_id = cake_types.id
+        GROUP BY cake_types.name
         ORDER BY SUM(sales.quantity) DESC
     ''')
     

@@ -12,7 +12,13 @@ from datetime import datetime, timedelta
 import calendar
 import os
 
-from cake_sale_recommender.database import get_connection
+from database import get_connection
+
+
+CAKE_TYPES = ["Chocolate", "Vanilla", "Strawberry", "Red Velvet"]
+REGIONS = ["North", "South", "East", "West"]
+DAYS_OF_WEEK = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+
 class CakeSalesTracker:
     def __init__(self):
         pass # removed the excel_file
