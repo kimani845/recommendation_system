@@ -17,13 +17,14 @@ def index():
 def record_sales():
     cake_types = [ct[0] for ct in get_all_cake_types()]
     regions = [r[0] for r in get_all_regions()]
+    
     if request.method == 'POST':
         date = request.form['date']
         region = request.form['region']
         sales_data = {}
         try: 
-            for cakes in CAKE_TYPES:
-                sales_data[cakes] = int(request.form.get(cakes, 0))
+            for cakes in cake_types:
+                sales_data[cake] = int(request.form.get(cake, 0))
         except ValueError:
             flash("Invalid sales data. Please enter valid numbers.")
             return redirect(url_for('record_sales'))
@@ -32,11 +33,14 @@ def record_sales():
         flash("Sales data recorded successfully!")
         return redirect(url_for('record_sales'))
     
-    return render_template('record_sales.html', cake_types=CAKE_TYPES, regions=REGIONS)
+    return render_template('record_sales.html', cake_types=cake_types, regions=regions)
 
 @app.route('/generate_predictions', methods=['GET', 'POST'])
 def generate_predictions():
     predictions = {}
+    cake_types = [ct[0] for ct in get_all_cake_types()]
+    regions = [r[0] for r in get_all_regions()]
+    
     if request.method == 'POST':
         date = request.form['date']
         region = request.form['region']
