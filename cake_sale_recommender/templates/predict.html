@@ -1,0 +1,19 @@
+<form method="POST">
+    Date: <input type="date" name="date" required><br>
+    Region:
+    <select name="region">
+        {% for region in tracker.REGIONS %}
+        <option value="{{ region }}">{{ region }}</option>
+        {% endfor %}
+    </select><br>
+    <input type="submit" value="Predict">
+</form>
+
+{% if prediction %}
+<h3>Predicted Sales:</h3>
+<ul>
+    {% for cake in cake_types %}
+    <li>{{ cake }}: {{ prediction[cake] }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
