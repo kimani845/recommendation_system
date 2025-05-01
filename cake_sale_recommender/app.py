@@ -1,6 +1,6 @@
 # Flask Main App
 from flask import Flask, render_template, request, redirect, url_for, flash
-# from cake_sales_analysis import CakeSalesTracker, CAKE_TYPES, REGIONS
+from cake_sales_analysis import CakeSalesTracker
 from recommender import generate_recommendations
 from database import get_connection, get_all_cake_types, get_all_regions
 from datetime import datetime 
@@ -55,16 +55,22 @@ def generate_predictions():
             flash("Prediction generated successfully!")
         else:
             flash("Failed to generate prediction. Please train the model first.")
-    return render_template('generate_predictions.html', cake_types=CAKE_TYPES, regions=REGIONS, predictions=predictions)
+    return render_template('generate_predictions.html', cake_types=cake_types, regions=regions, predictions=predictions)
 
 @app.route('/recommendations', methods=['GET', 'POST'])
 def recommendations():
+    cake_types = [ct[0] for ct in get_all_cake_types()]
+    regions = [r[0] for r in get_all_regions()]
     recommendations = {}
+
     if request.method == 'POST':
         region = request.form['region']
-        recommendations = generate_recommendations(region=region)
-    return render_template('recommendations.html', cake_types=CAKE_TYPES, regions=REGIONS, recommendations=recommendations)
+        try:
+            recommendations = generate_recommendations(region=region)
+        except Exception as e:
+            flash(f"Error generating recommendations: {e}")
 
+    return render_template('recommendations.html', cake_types=cake_types, regions=regions, recommendations=recommendations)
 
 @app.route('/analysis')
 def analysis():
