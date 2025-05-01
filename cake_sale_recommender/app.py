@@ -15,7 +15,7 @@ tracker = CakeSalesTracker()
 
 @app.route('/')
 def index():
-    return redirect(url_for('base'))
+    return redirect(url_for('analysis'))
 @app.route('/record_sales', methods=['GET', 'POST'])
 def record_sales():
     # Fetch cake types and regions from the database
